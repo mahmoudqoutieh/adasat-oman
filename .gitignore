@@ -1,0 +1,14 @@
+node_modules/
+dist/
+dist-ssr/
+.DS_Store
+*.log
+.env
+.env.*
+
+# Server-side secrets and runtime data (never commit these)
+public/api/config.php
+public/data/*.json
+public/uploads/*
+!public/uploads/.htaccess
+!public/uploads/.gitkeep
