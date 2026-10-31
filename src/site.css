@@ -1,3 +1,21 @@
+@font-face {
+  font-family: "Readex Pro";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/assets/fonts/readex-arabic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
+@font-face {
+  font-family: "Readex Pro";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/assets/fonts/readex-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 *,
 *::before,
 *::after {
@@ -925,4 +943,362 @@ button:focus-visible {
 
 .scroll-scrub {
   overflow-x: clip;
+}
+
+/* ================= device split: desktop scrub vs phone loop ================= */
+.only-desktop {
+  display: none;
+}
+
+@media (min-width: 861px) and (hover: hover) and (pointer: fine) {
+  .only-desktop {
+    display: block;
+  }
+
+  .only-mobile {
+    display: none;
+  }
+}
+
+.dhero-ph {
+  height: 100svh;
+  background: var(--bg) center / cover no-repeat;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a,
+button {
+  touch-action: manipulation;
+}
+
+/* ---------- phone hero: native autoplay loop, no scroll-driven seeking ---------- */
+.mhero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.mhero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+
+.mhero__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, var(--bg) 0%, rgba(12, 30, 42, 0.82) 30%, rgba(12, 30, 42, 0) 62%),
+    linear-gradient(to bottom, rgba(12, 30, 42, 0.7) 0%, rgba(12, 30, 42, 0) 22%);
+}
+
+.mhero__copy {
+  position: relative;
+  display: grid;
+  gap: 0.9rem;
+  width: 100%;
+  padding: 0 var(--pad) calc(6.6rem + env(safe-area-inset-bottom));
+  justify-items: start;
+}
+
+.mhero__kicker {
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.mhero h1 {
+  font-size: clamp(2.3rem, 11.5vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.2;
+  max-width: 12ch;
+  text-wrap: balance;
+}
+
+.mhero__body {
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.8;
+  max-width: 32ch;
+}
+
+.mhero__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mhero__tags li {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.82rem;
+}
+
+.mhero .cta-arrow {
+  margin-top: 0.4rem;
+}
+
+/* ---------- phone story cards ---------- */
+.mstory {
+  background: var(--bg);
+  padding: 2.5rem 0 1rem;
+}
+
+.mstory__track {
+  display: flex;
+  gap: 0.8rem;
+  padding-inline: var(--pad);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.mstory__track::-webkit-scrollbar {
+  display: none;
+}
+
+.mstory__card {
+  position: relative;
+  flex: 0 0 82%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--bg-2);
+  scroll-snap-align: center;
+}
+
+.mstory__card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mstory__text {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: grid;
+  gap: 0.4rem;
+  padding: 3rem 1.2rem 1.3rem;
+  background: linear-gradient(to top, rgba(12, 30, 42, 0.95) 0%, rgba(12, 30, 42, 0.7) 55%, rgba(12, 30, 42, 0) 100%);
+}
+
+.mstory__text p {
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.mstory__text h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.mstory__text span {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ---------- phone performance + layout ---------- */
+@media (max-width: 860px), (hover: none) {
+  /* no blur or 3D work while scrolling on phones */
+  .hdr[data-solid="true"],
+  .mbar {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .hdr[data-solid="true"] {
+    background: rgba(12, 30, 42, 0.96);
+  }
+
+  .mbar {
+    background: rgba(12, 30, 42, 0.97);
+  }
+
+  .pcard {
+    transform: none;
+    will-change: auto;
+    transition: none;
+  }
+
+  .pcard__shine {
+    display: none;
+  }
+
+  .svc,
+  .visit,
+  .foot {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 640px;
+  }
+}
+
+@media (max-width: 860px) {
+  :root {
+    --pad: 1.1rem;
+  }
+
+  .hdr {
+    height: 56px;
+  }
+
+  .brand {
+    font-size: 1.05rem;
+  }
+
+  .brands {
+    padding-block: 1rem;
+  }
+
+  .brands__track {
+    gap: 2.4rem;
+    animation-duration: 34s;
+  }
+
+  .brands__item {
+    font-size: 1.35rem;
+  }
+
+  .coll {
+    padding-block: 2.8rem 3rem;
+  }
+
+  .coll__head {
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .coll h2,
+  .svc h2,
+  .visit h2 {
+    font-size: 1.9rem;
+  }
+
+  .chips {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .chips button {
+    flex: 0 0 auto;
+  }
+
+  .coll__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .pcard,
+  .pcard:first-child {
+    flex: none;
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .pcard:first-child {
+    grid-column: span 2;
+  }
+
+  .pcard:first-child .pcard__media {
+    aspect-ratio: 16 / 11;
+    flex: none;
+  }
+
+  .pcard__body {
+    gap: 0.3rem;
+    padding: 0.8rem 0.8rem 0.9rem;
+  }
+
+  .pcard h3 {
+    font-size: 0.98rem;
+  }
+
+  .pcard__desc {
+    display: none;
+  }
+
+  .pcard:first-child .pcard__desc {
+    display: block;
+    font-size: 0.88rem;
+  }
+
+  .pcard__cat {
+    font-size: 0.78rem;
+  }
+
+  .pcard__row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.55rem;
+    margin-top: 0.3rem;
+  }
+
+  .pcard__row strong {
+    font-size: 1rem;
+  }
+
+  .card-ask {
+    justify-content: center;
+    min-height: 42px;
+    padding-inline: 0.6rem;
+  }
+
+  .svc {
+    padding-block: 3rem;
+    gap: 1.5rem;
+  }
+
+  .svc__list li {
+    padding-block: 1.15rem;
+  }
+
+  .svc__list h3 {
+    font-size: 1.15rem;
+  }
+
+  .visit {
+    padding-block: 3rem;
+  }
+
+  .visit-cta {
+    min-height: 68px;
+    font-size: 1.3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mhero__video {
+    display: none;
+  }
+
+  .mhero {
+    background: var(--bg) url("/assets/world/hero-mobile-poster.jpg") center / cover no-repeat;
+  }
 }
